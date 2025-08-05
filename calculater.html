@@ -184,6 +184,17 @@ button.success:hover {
 
 <div class="box">
   <h2>Money Calculator</h2>
+  <div style="text-align:center; margin-bottom: 15px;">
+  <label for="datePicker"><strong>Select Date:</strong></label>
+  <input type="date" id="datePicker">
+  <button onclick="loadData()">🔄 Load</button>
+   <button class="secondary" onclick="resetToZero()">Reset to 0</button>
+</div>
+<div style="text-align:center; margin-bottom: 15px;">
+  <label for="userName"><strong>User Name:</strong></label>
+  <input type="text" id="userName" placeholder="Enter user name">
+</div>
+
   
 
 
@@ -304,7 +315,7 @@ button.success:hover {
   <div class="button-group">
     <button class="secondary" onclick="saveData()">Save Data</button>
     <button class="secondary" onclick="loadData()">Load Data</button>
-    <button class="secondary" onclick="resetToZero()">Reset to 0</button>
+   
   </div>
 
   <div class="button-group">
@@ -325,14 +336,28 @@ button.success:hover {
 <script>
   // Run when page is ready
 window.onload = function () {
+  // Set today's date in the date picker
+  document.getElementById("datePicker").value = new Date().toISOString().split('T')[0];
+
+  // Optional: auto-total when input changes
   const inputs = document.querySelectorAll("input[type='number'], #includeChoco, #notes");
   inputs.forEach(input => {
     input.addEventListener("input", total);
     input.addEventListener("change", total);
   });
-  loadData(); // Load saved data on startup
-  total(); // Initial calculation
+
+  total(); // Initial total calculation
 };
+
+
+function getSelectedDate() {
+  const picker = document.getElementById("datePicker");
+  return picker.value || new Date().toISOString().split('T')[0]; // fallback to today
+}
+function getUserName() {
+  return document.getElementById("userName").value.trim();
+}
+
 
 function getFormData() {
   return {
@@ -354,35 +379,67 @@ function getFormData() {
 }
 
 function saveData() {
+  const date = getSelectedDate();
+  const user = getUserName();
+
+  if (!user) {
+    alert("❌ Please enter a user name.");
+    return;
+  }
+
   const data = getFormData();
-  localStorage.setItem('moneyCalculatorData', JSON.stringify(data));
+  let allData = JSON.parse(localStorage.getItem("moneyCalculatorAllData")) || {};
+
+  if (!allData[date]) {
+    allData[date] = {};
+  }
+
+  allData[date][user] = data;
+
+  localStorage.setItem("moneyCalculatorAllData", JSON.stringify(allData));
   document.getElementById("output").innerHTML =
-    '<div class="success">✅ Data saved successfully!</div>';
+    `<div class="success">✅ Data saved for ${user} on ${date}!</div>`;
 }
 
 function loadData() {
-  const savedData = localStorage.getItem('moneyCalculatorData');
-  if (savedData) {
-    const data = JSON.parse(savedData);
-    document.getElementById("n500").value = data.n500;
-    document.getElementById("n200").value = data.n200;
-    document.getElementById("n100").value = data.n100;
-    document.getElementById("n50").value = data.n50;
-    document.getElementById("n20").value = data.n20;
-    document.getElementById("n10").value = data.n10;
-    document.getElementById("n5").value = data.n5;
-    document.getElementById("c2").value = data.c2;
-    document.getElementById("c1").value = data.c1;
-    document.getElementById("ch5").value = data.ch5;
-    document.getElementById("ch1").value = data.ch1;
-    document.getElementById("includeChoco").checked = data.includeChoco;
-    document.getElementById("notes").value = data.notes || '';
+  const date = getSelectedDate();
+  const user = getUserName();
 
-    document.getElementById("output").innerHTML =
-      '<div class="success">✅ Data loaded successfully!</div>';
-    total();
+  if (!user) {
+    alert("❌ Please enter a user name.");
+    return;
   }
+
+  const allData = JSON.parse(localStorage.getItem("moneyCalculatorAllData")) || {};
+  const dayData = allData[date] || {};
+  const data = dayData[user];
+
+  if (!data) {
+    document.getElementById("output").innerHTML =
+      `<div class="error">❌ No data found for ${user} on ${date}</div>`;
+    return;
+  }
+
+  document.getElementById("n500").value = data.n500;
+  document.getElementById("n200").value = data.n200;
+  document.getElementById("n100").value = data.n100;
+  document.getElementById("n50").value = data.n50;
+  document.getElementById("n20").value = data.n20;
+  document.getElementById("n10").value = data.n10;
+  document.getElementById("n5").value = data.n5;
+  document.getElementById("c2").value = data.c2;
+  document.getElementById("c1").value = data.c1;
+  document.getElementById("ch5").value = data.ch5;
+  document.getElementById("ch1").value = data.ch1;
+  document.getElementById("includeChoco").checked = data.includeChoco;
+  document.getElementById("notes").value = data.notes || '';
+
+  document.getElementById("output").innerHTML =
+    `<div class="success">✅ Loaded data for ${user} on ${date}!</div>`;
+  total();
 }
+
+
 function downloadCSV() {
   const data = getFormData();
 
