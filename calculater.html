@@ -310,13 +310,6 @@ button.success:hover {
     <label for="includeChoco">Include Chocolates 🍫</label>
   </div>
 
-<div style="text-align:center; margin-bottom: 10px;">
-  <strong>👥 Memberships Today:</strong>
-  <span id="membershipCount">0</span><br>
-
-  <input type="number" id="manualMembership" placeholder="Enter count" min="0" style="width:100px;">
-  <button onclick="saveMembershipCount()">Save</button>
-</div>
 
 
 
@@ -361,34 +354,6 @@ window.onload = function () {
 
   total(); // Initial total calculation
 };
-function saveMembershipCount() {
-  const date = getSelectedDate();
-  const count = parseInt(document.getElementById("manualMembership").value);
-
-  if (isNaN(count) || count < 0) {
-    alert("Please enter a valid number");
-    return;
-  }
-
-  const membershipData = JSON.parse(localStorage.getItem("manualMembershipData")) || {};
-  membershipData[date] = count;
-  localStorage.setItem("manualMembershipData", JSON.stringify(membershipData));
-
-  updateMembershipCount();
-}
-
-function updateMembershipCount() {
-  const date = getSelectedDate();
-  const membershipData = JSON.parse(localStorage.getItem("manualMembershipData")) || {};
-  const count = membershipData[date] || 0;
-
-  document.getElementById("membershipCount").textContent = count;
-  document.getElementById("manualMembership").value = count; // show in input
-}
-
-
-
-
 function getSelectedDate() {
   const picker = document.getElementById("datePicker");
   return picker.value || new Date().toISOString().split('T')[0]; // fallback to today
@@ -831,6 +796,7 @@ window.onload = function () {
 </script>
 </body>
 </html>
+
 
 
 
