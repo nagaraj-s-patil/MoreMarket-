@@ -1,151 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>📅 All Saved Money Calculator Data</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>View All Saved Money Data</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
     body {
       font-family: Arial, sans-serif;
-      background: #f4f6f8;
+      background: #f9f9f9;
       padding: 20px;
-      color: #333;
     }
     h1 {
       text-align: center;
-      color: #1e40af;
     }
-    .date-box {
+    .date-block {
       background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      margin: 20px 0;
       padding: 15px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
     }
-    .user-name {
-      font-weight: bold;
-      margin-top: 10px;
-      color: #0f172a;
-    }
-    .user-details {
-      background: #f9fafb;
-      margin: 5px 0 15px 10px;
+    .user-entry {
+      margin: 10px 0;
       padding: 10px;
-      border-left: 4px solid #3b82f6;
-      border-radius: 5px;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      background-color: #f3f3f3;
     }
-    button {
-      background: #dc2626;
+    .user-entry button {
+      margin-left: 10px;
+      background: red;
       color: white;
       border: none;
-      padding: 10px 15px;
-      border-radius: 5px;
+      padding: 5px 10px;
+      border-radius: 4px;
       cursor: pointer;
-      margin-top: 20px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
     }
-    button:hover {
-      background: #b91c1c;
+    .user-entry button:hover {
+      background: darkred;
     }
-    .small {
-      font-size: 0.85em;
-      color: #555;
+    .clear-btn {
+      background: #555;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-bottom: 20px;
     }
-    .note {
-      font-style: italic;
-      color: #374151;
-      margin-top: 6px;
-    }
-    .no-data {
-      text-align: center;
-      font-size: 1.2em;
-      color: #999;
-      margin-top: 40px;
+    .clear-btn:hover {
+      background: #222;
     }
   </style>
 </head>
 <body>
   <h1>📋 All Saved Money Calculator Data</h1>
-  <div id="dataContainer"></div>
-  <button onclick="clearAll()">🗑 Clear All Data</button>
+  <button class="clear-btn" onclick="clearAllData()">🧹 Clear All Data</button>
+  <div id="dataDisplay"></div>
 
   <script>
-    function loadAllData() {
-      const container = document.getElementById("dataContainer");
-      const allData = JSON.parse(localStorage.getItem("moneyCalculatorAllData")) || {};
+    const localStorageKey = "moneyCalculatorAllData";
+    const allData = JSON.parse(localStorage.getItem(localStorageKey)) || {};
+    const dataDisplay = document.getElementById("dataDisplay");
+
+    function renderData() {
+      dataDisplay.innerHTML = "";
 
       if (Object.keys(allData).length === 0) {
-        container.innerHTML = `<div class="no-data">❌ No data found in localStorage.</div>`;
+        dataDisplay.innerHTML = "<p>No data available.</p>";
         return;
       }
 
-      container.innerHTML = '';
-
-      // Sort dates in descending order
-      Object.keys(allData).sort().reverse().forEach(date => {
-        const dateDiv = document.createElement("div");
-        dateDiv.className = "date-box";
-        dateDiv.innerHTML = `<h2>📅 ${date}</h2>`;
+      for (const date in allData) {
+        const dateBlock = document.createElement("div");
+        dateBlock.className = "date-block";
+        dateBlock.innerHTML = `<h2>📅 Date: ${date}</h2>`;
 
         const users = allData[date];
-        Object.keys(users).forEach(user => {
-          const userData = users[user];
-          const userDiv = document.createElement("div");
-          userDiv.innerHTML = `
-            <div class="user-name">👤 ${user}</div>
-            <div class="user-details">
-              <div>💰 Total Amount: ₹${calculateTotal(userData)}</div>
-              <div>🍫 Chocolates: ${userData.includeChoco ? "Included" : "Not Included"}</div>
-              <div class="note">📝 Notes: ${userData.notes || 'None'}</div>
-              <div class="small">📌 Saved at: ${formatDate(userData.timestamp)}</div>
-            </div>
+        for (const user in users) {
+          const entry = users[user];
+          const denominations = ['n2000','n500','n200','n100','n50','n20','n10','n5','n2','n1'];
+          let total = 0;
+
+          denominations.forEach(den => {
+            if (entry[den]) {
+              const value = parseInt(den.replace('n', '')) * entry[den];
+              total += value;
+            }
+          });
+
+          if (entry.chocolates) {
+            total += entry.chocolates * 10;
+          }
+
+          const userEntry = document.createElement("div");
+          userEntry.className = "user-entry";
+          userEntry.innerHTML = `
+            <strong>👤 ${user}</strong><br/>
+            💰 Total: ₹${total}<br/>
+            🍫 Chocolates: ${entry.chocolates || 0}<br/>
+            📝 Note: ${entry.note || ''}<br/>
+            🕒 Saved: ${new Date(entry.timestamp || Date.now()).toLocaleString()}<br/>
+            <button onclick="deleteUserEntry('${date}', '${user}')">🗑️ Delete</button>
           `;
-          dateDiv.appendChild(userDiv);
-        });
+          dateBlock.appendChild(userEntry);
+        }
 
-        container.appendChild(dateDiv);
-      });
-    }
-
-    function calculateTotal(data) {
-      let total =
-        500 * (data.n500 || 0) +
-        200 * (data.n200 || 0) +
-        100 * (data.n100 || 0) +
-        50 * (data.n50 || 0) +
-        20 * (data.n20 || 0) +
-        10 * (data.n10 || 0) +
-        5 * (data.n5 || 0) +
-        2 * (data.c2 || 0) +
-        1 * (data.c1 || 0);
-
-      if (data.includeChoco) {
-        total += 5 * (data.ch5 || 0) + 1 * (data.ch1 || 0);
-      }
-
-      return total;
-    }
-
-    function formatDate(timestamp) {
-      const date = new Date(timestamp);
-      return date.toLocaleString('en-IN', { hour12: true });
-    }
-
-    function clearAll() {
-      if (confirm("⚠️ Are you sure you want to delete ALL saved data?")) {
-        localStorage.removeItem("moneyCalculatorAllData");
-        alert("✅ All data cleared!");
-        loadAllData();
+        dataDisplay.appendChild(dateBlock);
       }
     }
 
-    window.onload = loadAllData;
+    function deleteUserEntry(date, user) {
+      if (confirm(`Are you sure you want to delete data for ${user} on ${date}?`)) {
+        delete allData[date][user];
+        if (Object.keys(allData[date]).length === 0) {
+          delete allData[date]; // remove date block if no users left
+        }
+        localStorage.setItem(localStorageKey, JSON.stringify(allData));
+        renderData(); // re-render after delete
+      }
+    }
+
+    function clearAllData() {
+      if (confirm("Are you sure you want to clear ALL saved data?")) {
+        localStorage.removeItem(localStorageKey);
+        location.reload();
+      }
+    }
+
+    renderData();
   </script>
 </body>
 </html>
