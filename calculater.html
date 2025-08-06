@@ -477,6 +477,11 @@ function loadData() {
     `<div class="success">✅ Loaded data for ${user} on ${date}!</div>`;
   total();
 }
+window.onload = function () {
+  document.getElementById("datePicker").value = new Date().toISOString().split('T')[0];
+  total();
+  updateMembershipCount();
+};
 
 
 function downloadCSV() {
@@ -826,6 +831,7 @@ window.onload = function () {
 </script>
 </body>
 </html>
+
 
 
 
