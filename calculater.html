@@ -311,11 +311,13 @@ button.success:hover {
   </div>
 
 <div style="text-align:center; margin-bottom: 10px;">
-  <strong>👥 Memberships Today:</strong> 
+  <strong>👥 Memberships Today:</strong>
   <span id="membershipCount">0</span><br>
-  <strong>🧑‍🤝‍🧑 Names:</strong> 
-  <span id="membershipNames">None</span>
+
+  <input type="number" id="manualMembership" placeholder="Enter count" min="0" style="width:100px;">
+  <button onclick="saveMembershipCount()">Save</button>
 </div>
+
 
 
   <div class="button-group">
@@ -359,14 +361,29 @@ window.onload = function () {
 
   total(); // Initial total calculation
 };
+function saveMembershipCount() {
+  const date = getSelectedDate();
+  const count = parseInt(document.getElementById("manualMembership").value);
+
+  if (isNaN(count) || count < 0) {
+    alert("Please enter a valid number");
+    return;
+  }
+
+  const membershipData = JSON.parse(localStorage.getItem("manualMembershipData")) || {};
+  membershipData[date] = count;
+  localStorage.setItem("manualMembershipData", JSON.stringify(membershipData));
+
+  updateMembershipCount();
+}
+
 function updateMembershipCount() {
   const date = getSelectedDate();
-  const allData = JSON.parse(localStorage.getItem("moneyCalculatorAllData")) || {};
-  const todayData = allData[date] || {};
-  const names = Object.keys(todayData);
+  const membershipData = JSON.parse(localStorage.getItem("manualMembershipData")) || {};
+  const count = membershipData[date] || 0;
 
-  document.getElementById("membershipCount").textContent = names.length;
-  document.getElementById("membershipNames").textContent = names.length > 0 ? names.join(', ') : "None";
+  document.getElementById("membershipCount").textContent = count;
+  document.getElementById("manualMembership").value = count; // show in input
 }
 
 
@@ -809,6 +826,7 @@ window.onload = function () {
 </script>
 </body>
 </html>
+
 
 
 
