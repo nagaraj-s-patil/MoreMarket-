@@ -310,6 +310,11 @@ button.success:hover {
     <label for="includeChoco">Include Chocolates 🍫</label>
   </div>
 
+  <div style="text-align:center; margin-bottom: 10px;">
+  <strong>👥 Memberships Today:</strong> <span id="membershipCount">0</span>
+  </div>
+
+
   <div class="button-group">
     <button onclick="total()">Total Amount</button>
     <button onclick="calculateBreakdown()">Breakdown ₹3100</button>
@@ -351,6 +356,16 @@ window.onload = function () {
 
   total(); // Initial total calculation
 };
+  function updateMembershipCount() {
+  const date = getSelectedDate();
+  const allData = JSON.parse(localStorage.getItem("moneyCalculatorAllData")) || {};
+  const todayData = allData[date] || {};
+  const count = Object.keys(todayData).length;
+  document.getElementById("membershipCount").textContent = count;
+}
+updateMembershipCount(); // after saving
+updateMembershipCount(); // after loading
+
 
 
 function getSelectedDate() {
@@ -774,9 +789,22 @@ function resetToZero() {
   total(); // Recalculate total
 }
 
+window.onload = function () {
+  document.getElementById("datePicker").value = new Date().toISOString().split('T')[0];
+  
+  const inputs = document.querySelectorAll("input[type='number'], #includeChoco, #notes");
+  inputs.forEach(input => {
+    input.addEventListener("input", total);
+    input.addEventListener("change", total);
+  });
+
+  total();
+  updateMembershipCount(); // ← Add this line
+};
 
 </script>
 </body>
 </html>
+
 
 
