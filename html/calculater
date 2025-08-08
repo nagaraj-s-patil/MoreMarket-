@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Money Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/calculater_style.css">
+
+
+</head>
+<body>
+
+<div class="box">
+  <h2>Money Calculator</h2>
+  <div style="text-align:center; margin-bottom: 15px;">
+  <label for="datePicker"><strong>Select Date:</strong></label>
+  <input type="date" id="datePicker">
+  <button onclick="loadData()">🔄 Load</button>
+   <button class="secondary" onclick="resetToZero()">Reset to 0</button>
+</div>
+<div style="text-align:center; margin-bottom: 15px;">
+ <label for="username">User Name:</label>
+<input type="text" id="username" list="usernameSuggestions" placeholder="Enter user name">
+<datalist id="usernameSuggestions"></datalist>
+
+</div>
+<div style="text-align:center; margin-bottom: 15px;">
+  <a href="./Show_All_data.html" target="_blank">📋 View All Saved Data</a>
+<a > </a>  
+</div>
+  
+
+
+  <div class="input-row">
+    <label for="n500">₹500 Notes:</label>
+    <div class="number-control">
+      <button onclick="changeValue('n500', -1)">−</button>
+      <input type="number" id="n500" value="0" min="0">
+      <button onclick="changeValue('n500', 1)">+</button>
+    </div>
+  </div>
+
+  <div class="input-row">
+    <label for="n200">₹200 Notes:</label>
+    <div class="number-control">
+      <button onclick="changeValue('n200', -1)">−</button>
+      <input type="number" id="n200" value="0" min="0">
+      <button onclick="changeValue('n200', 1)">+</button>
+    </div>
+  </div>
+
+  <div class="input-row">
+    <label for="n100">₹100 Notes:</label>
+    <div class="number-control">
+      <button onclick="changeValue('n100', -1)">−</button>
+      <input type="number" id="n100" value="0" min="0">
+      <button onclick="changeValue('n100', 1)">+</button>
+    </div>
+  </div>
+
+  <div class="input-row">
+    <label for="n50">₹50 Notes:</label>
+    <div class="number-control">
+    
+      <button onclick="changeValue('n50', -1)">−</button>
+      <input type="number" id="n50" value="0" min="0">
+      <button onclick="changeValue('n50', 1)">+</button>
+    </div>
+  </div>
+
+  <div class="input-row">
+    <label for="n20">₹20 Notes:</label>
+    <div class="number-control">
+      <button onclick="changeValue('n20', -1)">−</button>
+      <input type="number" id="n20" value="0" min="0">
+      <button onclick="changeValue('n20', 1)">+</button>
+    </div>
+  </div>
+
+  <div class="input-row">
+    <label for="n10">₹10 Notes:</label>
+    <div class="number-control">
+      <button onclick="changeValue('n10', -1)">−</button>
+      <input type="number" id="n10" value="0" min="0">
+      <button onclick="changeValue('n10', 1)">+</button>
+    </div>
+  </div>
+
+  <h3>Coins:</h3>
+
+  <div class="input-row">
+    <label for="n5">₹5 Notes:</label>
+    <div class="number-control">
+      <button onclick="changeValue('n5', -1)">−</button>
+      <input type="number" id="n5" value="0" min="0">
+      <button onclick="changeValue('n5', 1)">+</button>
+    </div>
+  </div>
+
+  <div class="input-row">
+    <label for="c2">₹2 Coins:</label>
+    <div class="number-control">
+      <button onclick="changeValue('c2', -1)">−</button>
+      <input type="number" id="c2" value="0" min="0">
+      <button onclick="changeValue('c2', 1)">+</button>
+    </div>
+  </div>
+
+  <div class="input-row">
+    <label for="c1">₹1 Coins:</label>
+    <div class="number-control">
+      <button onclick="changeValue('c1', -1)">−</button>
+      <input type="number" id="c1" value="0" min="0">
+      <button onclick="changeValue('c1', 1)">+</button>
+    </div>
+  </div>
+
+  <h3>Chocolates:</h3>
+
+  <div class="input-row">
+    <label for="ch5">₹5 Chocolates:</label>
+    <div class="number-control">
+      <button onclick="changeValue('ch5', -1)">−</button>
+      <input type="number" id="ch5" value="0" min="0">
+      <button onclick="changeValue('ch5', 1)">+</button>
+    </div>
+  </div>
+
+  <div class="input-row">
+    <label for="ch1">₹1 Chocolates:</label>
+    <div class="number-control">
+      <button onclick="changeValue('ch1', -1)">−</button>
+      <input type="number" id="ch1" value="0" min="0">
+      <button onclick="changeValue('ch1', 1)">+</button>
+    </div>
+  </div>
+
+  <div class="checkbox-container">
+    <input type="checkbox" id="includeChoco" checked>
+    <label for="includeChoco">Include Chocolates 🍫</label>
+  </div>
+
+
+
+
+  <div class="button-group">
+    <button onclick="total()">Total Amount</button>
+    <button onclick="calculateBreakdown()">Breakdown ₹3100</button>
+
+
+  </div>
+
+  <div class="button-group">
+    <button class="secondary" onclick="saveData()">Save Data</button>
+    <button class="secondary" onclick="loadData()">Load Data</button>
+   
+  </div>
+
+  <div class="button-group">
+    <button class="success" onclick="downloadCSV()">Download CSV</button>
+        
+  </div>
+
+  <div class="result" id="totalAmountOutput"></div>
+  <div class="result" id="output"></div>
+  
+  
+    <div class="notes-container">
+    <label for="notes">Notes:</label>
+    <textarea id="notes" placeholder="Add any notes about this calculation..."></textarea>
+  </div>
+</div>
+
+<script src="../js/calculater_js.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
