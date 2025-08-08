@@ -1,7 +1,7 @@
 const localStorageKey = "moneyCalculatorAllData";
 const allData = JSON.parse(localStorage.getItem(localStorageKey)) || {};
 const dataDisplay = document.getElementById("dataDisplay");
-
+ 
 function renderData() {
   dataDisplay.innerHTML = "";
 
@@ -78,5 +78,6 @@ function clearAllData() {
     location.reload();
   }
 }
+
 
 renderData();
