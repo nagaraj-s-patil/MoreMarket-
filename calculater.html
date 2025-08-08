@@ -779,6 +779,25 @@ function resetToZero() {
 
   total(); // Recalculate total
 }
+  <script>
+window.onload = function() {
+  const params = new URLSearchParams(window.location.search);
+  const dateParam = params.get("date");
+  const userParam = params.get("user");
+
+  if (dateParam && userParam) {
+    // Fill the date and user fields
+    document.getElementById("date").value = dateParam;
+    document.getElementById("user").value = userParam;
+
+    // Now load the saved data for that date and user
+    if (typeof loadData === "function") {
+      loadData();
+    }
+  }
+};
+</script>
+
 
 window.onload = function () {
   document.getElementById("datePicker").value = new Date().toISOString().split('T')[0];
@@ -792,10 +811,12 @@ window.onload = function () {
   total();
   updateMembershipCount(); // ← Add this line
 };
+  
 
 </script>
 </body>
 </html>
+
 
 
 
