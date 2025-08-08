@@ -779,7 +779,7 @@ function resetToZero() {
 
   total(); // Recalculate total
 }
-  <script>
+
 window.onload = function() {
   const params = new URLSearchParams(window.location.search);
   const dateParam = params.get("date");
@@ -797,25 +797,9 @@ window.onload = function() {
   }
 };
 </script>
-
-
-window.onload = function () {
-  document.getElementById("datePicker").value = new Date().toISOString().split('T')[0];
-  
-  const inputs = document.querySelectorAll("input[type='number'], #includeChoco, #notes");
-  inputs.forEach(input => {
-    input.addEventListener("input", total);
-    input.addEventListener("change", total);
-  });
-
-  total();
-  updateMembershipCount(); // ← Add this line
-};
-  
-
-</script>
 </body>
 </html>
+
 
 
 
