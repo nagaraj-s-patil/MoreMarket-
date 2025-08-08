@@ -1,184 +1,177 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Money Calculator</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../css/calculater_style.css">
+/* === Base Styles === */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  background: #f4f6f8;
+  margin: 0;
+  padding: 15px;
+  color: #1d1d1f;
+}
 
+/* Main Container */
+.box {
+  background: #fff;
+  padding: 20px;
+  border-radius: 14px;
+  max-width: 500px;
+  margin: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
 
-</head>
-<body>
+/* Headings */
+h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #111;
+}
 
-<div class="box">
-  <h2>Money Calculator</h2>
-  <div style="text-align:center; margin-bottom: 15px;">
-  <label for="datePicker"><strong>Select Date:</strong></label>
-  <input type="date" id="datePicker">
-  <button onclick="loadData()">🔄 Load</button>
-   <button class="secondary" onclick="resetToZero()">Reset to 0</button>
-</div>
-<div style="text-align:center; margin-bottom: 15px;">
- <label for="username">User Name:</label>
-<input type="text" id="username" list="usernameSuggestions" placeholder="Enter user name">
-<datalist id="usernameSuggestions"></datalist>
+h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  color: #333;
+}
 
-</div>
-<div style="text-align:center; margin-bottom: 15px;">
-  <a href="./Show_All_data.html" target="_blank">📋 View All Saved Data</a>
-<a > </a>  
-</div>
-  
+/* Form Elements */
+label {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
 
+input[type="text"], input[type="number"], input[type="date"], select, textarea {
+  padding: 8px 10px;
+  font-size: 15px;
+  border: 1px solid #d1d1d6;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s;
+}
 
-  <div class="input-row">
-    <label for="n500">₹500 Notes:</label>
-    <div class="number-control">
-      <button onclick="changeValue('n500', -1)">−</button>
-      <input type="number" id="n500" value="0" min="0">
-      <button onclick="changeValue('n500', 1)">+</button>
-    </div>
-  </div>
+input:focus, textarea:focus, select:focus {
+  border-color: #007aff;
+}
 
-  <div class="input-row">
-    <label for="n200">₹200 Notes:</label>
-    <div class="number-control">
-      <button onclick="changeValue('n200', -1)">−</button>
-      <input type="number" id="n200" value="0" min="0">
-      <button onclick="changeValue('n200', 1)">+</button>
-    </div>
-  </div>
+/* Input Row */
+.input-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f1f9f4;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
 
-  <div class="input-row">
-    <label for="n100">₹100 Notes:</label>
-    <div class="number-control">
-      <button onclick="changeValue('n100', -1)">−</button>
-      <input type="number" id="n100" value="0" min="0">
-      <button onclick="changeValue('n100', 1)">+</button>
-    </div>
-  </div>
+.input-row label {
+  flex: 1;
+}
 
-  <div class="input-row">
-    <label for="n50">₹50 Notes:</label>
-    <div class="number-control">
-    
-      <button onclick="changeValue('n50', -1)">−</button>
-      <input type="number" id="n50" value="0" min="0">
-      <button onclick="changeValue('n50', 1)">+</button>
-    </div>
-  </div>
+.number-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 
-  <div class="input-row">
-    <label for="n20">₹20 Notes:</label>
-    <div class="number-control">
-      <button onclick="changeValue('n20', -1)">−</button>
-      <input type="number" id="n20" value="0" min="0">
-      <button onclick="changeValue('n20', 1)">+</button>
-    </div>
-  </div>
+.number-control input {
+  width: 70px;
+  text-align: center;
+}
 
-  <div class="input-row">
-    <label for="n10">₹10 Notes:</label>
-    <div class="number-control">
-      <button onclick="changeValue('n10', -1)">−</button>
-      <input type="number" id="n10" value="0" min="0">
-      <button onclick="changeValue('n10', 1)">+</button>
-    </div>
-  </div>
+/* Plus & Minus Buttons */
+.number-control button {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 6px;
+  background: #007aff;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
 
-  <h3>Coins:</h3>
+.number-control button:hover {
+  background: #005bb5;
+}
 
-  <div class="input-row">
-    <label for="n5">₹5 Notes:</label>
-    <div class="number-control">
-      <button onclick="changeValue('n5', -1)">−</button>
-      <input type="number" id="n5" value="0" min="0">
-      <button onclick="changeValue('n5', 1)">+</button>
-    </div>
-  </div>
+/* Checkbox Container */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 15px 0;
+}
 
-  <div class="input-row">
-    <label for="c2">₹2 Coins:</label>
-    <div class="number-control">
-      <button onclick="changeValue('c2', -1)">−</button>
-      <input type="number" id="c2" value="0" min="0">
-      <button onclick="changeValue('c2', 1)">+</button>
-    </div>
-  </div>
+/* Buttons Group */
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
 
-  <div class="input-row">
-    <label for="c1">₹1 Coins:</label>
-    <div class="number-control">
-      <button onclick="changeValue('c1', -1)">−</button>
-      <input type="number" id="c1" value="0" min="0">
-      <button onclick="changeValue('c1', 1)">+</button>
-    </div>
-  </div>
+button {
+  flex: 1;
+  padding: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s;
+}
 
-  <h3>Chocolates:</h3>
+button:hover {
+  transform: translateY(-2px);
+}
 
-  <div class="input-row">
-    <label for="ch5">₹5 Chocolates:</label>
-    <div class="number-control">
-      <button onclick="changeValue('ch5', -1)">−</button>
-      <input type="number" id="ch5" value="0" min="0">
-      <button onclick="changeValue('ch5', 1)">+</button>
-    </div>
-  </div>
+button.primary {
+  background: #007aff;
+  color: white;
+}
 
-  <div class="input-row">
-    <label for="ch1">₹1 Chocolates:</label>
-    <div class="number-control">
-      <button onclick="changeValue('ch1', -1)">−</button>
-      <input type="number" id="ch1" value="0" min="0">
-      <button onclick="changeValue('ch1', 1)">+</button>
-    </div>
-  </div>
+button.secondary {
+  background: #8e8e93;
+  color: white;
+}
 
-  <div class="checkbox-container">
-    <input type="checkbox" id="includeChoco" checked>
-    <label for="includeChoco">Include Chocolates 🍫</label>
-  </div>
+button.success {
+  background: #34c759;
+  color: white;
+}
 
+button.secondary:hover {
+  background: #6e6e73;
+}
 
+button.success:hover {
+  background: #248a3d;
+}
 
+/* Result Output */
+.result {
+  background: #eaf6ff;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  margin-top: 12px;
+  font-size: 16px;
+}
 
-  <div class="button-group">
-    <button onclick="total()">Total Amount</button>
-    <button onclick="calculateBreakdown()">Breakdown ₹3100</button>
+/* Notes Box */
+.notes-container textarea {
+  width: 100%;
+  margin-top: 10px;
+  min-height: 60px;
+}
 
-
-  </div>
-
-  <div class="button-group">
-    <button class="secondary" onclick="saveData()">Save Data</button>
-    <button class="secondary" onclick="loadData()">Load Data</button>
-   
-  </div>
-
-  <div class="button-group">
-    <button class="success" onclick="downloadCSV()">Download CSV</button>
-        
-  </div>
-
-  <div class="result" id="totalAmountOutput"></div>
-  <div class="result" id="output"></div>
-  
-  
-    <div class="notes-container">
-    <label for="notes">Notes:</label>
-    <textarea id="notes" placeholder="Add any notes about this calculation..."></textarea>
-  </div>
-</div>
-
-<script src="../js/calculater_js.js"></script>
-</body>
-</html>
-
-
-
-
-
-
-
-
+/* Responsive */
+@media (max-width: 480px) {
+  .input-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .number-control {
+    margin-top: 6px;
+  }
+}
