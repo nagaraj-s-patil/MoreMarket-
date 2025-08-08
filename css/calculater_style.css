@@ -1,0 +1,220 @@
+
+/* Base Layout */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  background: #f5f5f7; /* Soft Apple-like gray */
+  padding: 15px;
+  margin: 0;
+  color: #1d1d1f;
+}
+
+/* Headings */
+h2, h3 {
+  text-align: center;
+  color: #1d1d1f;
+  margin-bottom: 10px;
+}
+
+/* Box Sections - Colored Backgrounds */
+.box {
+  padding: 20px;
+  border-radius: 16px;
+  max-width: 500px;
+  margin: 20px auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  width: 90%;
+  box-sizing: border-box;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+}
+
+/* Soft Apple-style pastel backgrounds */
+.box.green {
+  background: #e8f7ec;
+  border-left: 6px solid #34c759;
+}
+
+.box.blue {
+  background: #e7f1ff;
+  border-left: 6px solid #007aff;
+}
+
+.box.orange {
+  background: #fff4e6;
+  border-left: 6px solid #ff9500;
+}
+
+.box.purple {
+  background: #f5e9ff;
+  border-left: 6px solid #af52de;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .box {
+    padding: 15px;
+    width: 95%;
+  }
+}
+
+/* Input Rows */
+.input-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(52, 207, 31, 0.519); /* semi-transparent overlay */
+  padding: 8px;
+  border-radius: 10px;
+  margin: 10px 0;
+  gap: 10px;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.input-row label {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.input-row input[type="number"] {
+  flex: 0 0 100px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #d2d2d7;
+  border-radius: 8px;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+
+.input-row input:focus {
+  border-color: #007aff;
+  outline: none;
+}
+
+/* Number Controls */
+.number-control {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.number-control button {
+  width: 30px;
+  height: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  background-color: #1a1a1d81;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+
+
+/* Checkbox */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  margin: 15px 0;
+  gap: 10px;
+  font-size: 16px;
+}
+
+/* Notes */
+.notes-container textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #d2d2d7;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 60px;
+}
+
+.notes-container textarea:focus {
+  outline: none;
+  border-color: #007aff;
+}
+
+/* Buttons */
+.button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+button {
+  flex: 1;
+  padding: 12px;
+  background: #007aff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background: #005bb5;
+  transform: translateY(-2px);
+}
+
+button.secondary {
+  background: #8e8e93;
+}
+
+button.secondary:hover {
+  background: #6e6e73;
+}
+
+button.success {
+  background: #34c759;
+}
+
+button.success:hover {
+  background: #248a3d;
+}
+
+/* Result Box */
+.result {
+  margin-top: 15px;
+  padding: 12px;
+  background: #e0f7ff;
+  border: 1px solid #9edaff;
+  border-radius: 8px;
+  font-size: 18px;
+  text-align: center;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.success {
+  color: #34c759;
+}
+
+.error {
+  color: #ff3b30;
+}
+
+/* Breakdown */
+.breakdown {
+  margin-top: 10px;
+}
+
+.denomination {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px 0;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(5px);}
+  to {opacity: 1; transform: translateY(0);}
+}
