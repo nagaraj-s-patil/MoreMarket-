@@ -1,52 +1,62 @@
-/* === Base Layout === */
+/* === Base Styles === */
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-  background: #f8f9fa;
-  padding: 10px;
+  background: #f4f6f8;
   margin: 0;
+  padding: 15px;
   color: #1d1d1f;
+}
+
+/* Main Container */
+.box {
+  background: #fff;
+  padding: 20px;
+  border-radius: 14px;
+  max-width: 500px;
+  margin: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 /* Headings */
 h2 {
   text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
   color: #111;
-  margin-bottom: 15px;
-  font-size: 1.6rem;
 }
 
-/* Main Card */
-.box {
-  background: #fff;
-  padding: 20px;
-  border-radius: 14px;
-  max-width: 480px;
-  margin: auto;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  color: #333;
 }
 
-/* Form Inputs */
-input[type="number"], input[type="text"], select {
-  width: 100%;
-  padding: 10px;
+/* Form Elements */
+label {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+input[type="text"], input[type="number"], input[type="date"], select, textarea {
+  padding: 8px 10px;
+  font-size: 15px;
   border: 1px solid #d1d1d6;
   border-radius: 8px;
-  font-size: 15px;
-  text-align: center;
   outline: none;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s;
 }
 
-input:focus, select:focus {
+input:focus, textarea:focus, select:focus {
   border-color: #007aff;
 }
 
-/* Input Rows */
+/* Input Row */
 .input-row {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  background: #f1f8f4;
+  align-items: center;
+  background: #f1f9f4;
   padding: 10px;
   border-radius: 10px;
   margin-bottom: 8px;
@@ -54,44 +64,65 @@ input:focus, select:focus {
 
 .input-row label {
   flex: 1;
-  font-weight: 500;
-  font-size: 14px;
 }
 
-/* Buttons for +/- */
 .number-control {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
 }
 
+.number-control input {
+  width: 70px;
+  text-align: center;
+}
+
+/* Plus & Minus Buttons */
 .number-control button {
-  width: 32px;
-  height: 32px;
-  background: #007aff;
-  color: #fff;
+  width: 34px;
+  height: 34px;
   border: none;
-  font-size: 18px;
   border-radius: 6px;
+  background: #007aff;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.2s;
 }
 
 .number-control button:hover {
   background: #005bb5;
 }
 
-/* Main Action Buttons */
-button {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  font-size: 15px;
-  border-radius: 8px;
+/* Checkbox Container */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 15px 0;
+}
+
+/* Buttons Group */
+.button-group {
+  display: flex;
+  gap: 10px;
   margin-top: 10px;
+}
+
+button {
+  flex: 1;
+  padding: 10px;
+  font-size: 15px;
   font-weight: 500;
+  border-radius: 8px;
+  border: none;
   cursor: pointer;
   transition: 0.2s;
+}
+
+button:hover {
+  transform: translateY(-2px);
 }
 
 button.primary {
@@ -99,12 +130,13 @@ button.primary {
   color: white;
 }
 
-button.primary:hover {
-  background: #005bb5;
-}
-
 button.secondary {
   background: #8e8e93;
+  color: white;
+}
+
+button.success {
+  background: #34c759;
   color: white;
 }
 
@@ -112,17 +144,28 @@ button.secondary:hover {
   background: #6e6e73;
 }
 
-/* Result Box */
+button.success:hover {
+  background: #248a3d;
+}
+
+/* Result Output */
 .result {
   background: #eaf6ff;
-  padding: 12px;
+  padding: 10px;
   border-radius: 8px;
   text-align: center;
-  margin-top: 15px;
+  margin-top: 12px;
   font-size: 16px;
 }
 
-/* Responsive Adjustments */
+/* Notes Box */
+.notes-container textarea {
+  width: 100%;
+  margin-top: 10px;
+  min-height: 60px;
+}
+
+/* Responsive */
 @media (max-width: 480px) {
   .input-row {
     flex-direction: column;
