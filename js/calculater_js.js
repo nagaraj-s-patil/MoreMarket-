@@ -5,7 +5,7 @@ window.onload = function () {
   document.getElementById("datePicker").value = new Date().toISOString().split('T')[0];
 
   // Optional: auto-total when input changes
-  const inputs = document.querySelectorAll("input[type='number'], #includeChoco, #notes");
+  const inputs = document.querySelectorAll("input[type='number'], #includeChoco, #notes"); 
   inputs.forEach(input => {
     input.addEventListener("input", total);
     input.addEventListener("change", total);
