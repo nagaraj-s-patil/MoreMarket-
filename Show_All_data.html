@@ -95,16 +95,16 @@
 
           const userEntry = document.createElement("div");
           userEntry.className = "user-entry";
-          userEntry.innerHTML = `
-            <strong>👤 ${user}</strong><br/>
-            💰 Total: ₹${total}<br/>
-            🍫 Chocolates: ${entry.chocolates || 0}<br/>
-            📝 Note: ${entry.note || ''}<br/>
-            🕒 Saved: ${new Date(entry.timestamp || Date.now()).toLocaleString()}<br/>
-            <button onclick="deleteUserEntry('${date}', '${user}')">🗑️ Delete</button>
-          `;
-          dateBlock.appendChild(userEntry);
-        }
+        userEntry.innerHTML = `
+  <strong>👤 ${user}</strong><br/>
+  💰 Total: ₹${total}<br/>
+  🍫 Chocolates: ${entry.chocolates || 0}<br/>
+  📝 Note: ${entry.note || ''}<br/>
+  🕒 Saved: ${new Date(entry.timestamp || Date.now()).toLocaleString()}<br/>
+  <button onclick="deleteUserEntry('${date}', '${user}')">🗑️ Delete</button>
+  <button onclick="loadInCalculator('${date}', '${user}')">📂 Load</button>
+`;
+dateBlock.appendChild(userEntry);
 
         dataDisplay.appendChild(dateBlock);
       }
@@ -121,12 +121,30 @@
       }
     }
 
+      function loadInCalculator(date, user) {
+  // Send the date and user to calculator.html through URL
+  window.location.href = `calculator.html?date=${encodeURIComponent(date)}&user=${encodeURIComponent(user)}`;
+}
+
+
     function clearAllData() {
       if (confirm("Are you sure you want to clear ALL saved data?")) {
         localStorage.removeItem(localStorageKey);
         location.reload();
       }
     }
+      window.onload = function() {
+  const params = new URLSearchParams(window.location.search);
+  const dateParam = params.get("date");
+  const userParam = params.get("user");
+
+  if (dateParam && userParam) {
+    document.getElementById("date").value = dateParam;
+    document.getElementById("user").value = userParam;
+    loadData(); // Automatically load the data
+  }
+};
+
 
     renderData();
   </script>
