@@ -1,25 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>View All Saved Money Data</title>
- <link rel="stylesheet" href="../css/show_style.css"> 
-  
-  
 </head>
 <body>
-  <h1>📋 All Saved Money Calculator Data</h1>
 
-  <input type="text" id="searchInput" placeholder="🔍 Search by date or user name" oninput="handleSearch()" />
-  <button class="clear-btn" onclick="clearAllData()">🧹 Clear All Data</button>
+<h2>Saved Money Data</h2>
 
-  <div id="dataDisplay"></div>
-  <div id="pagination"></div>
+<!-- Date filter -->
+<label>From: <input type="date" id="fromDate"></label>
+<label>To: <input type="date" id="toDate"></label>
+<button onclick="applyDateFilter()">Filter</button>
+<button onclick="resetFilter()">Reset</button>
 
-  <script src="../js/show_js.js"></script>
+<!-- Data table -->
+<table border="1" id="dataTable">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>User</th>
+      <th>Total</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody id="tableBody">
+  </tbody>
+</table>
+
+<!-- Pagination -->
+<div>
+  <button onclick="prevPage()">Prev</button>
+  <span id="pageInfo"></span>
+  <button onclick="nextPage()">Next</button>
+</div>
+
+<script src="view.js"></script>
 </body>
-
-
 </html>
-
