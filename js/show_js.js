@@ -4,12 +4,11 @@ const dataDisplay = document.getElementById("dataDisplay");
 const paginationContainer = document.getElementById("pagination");
 const searchInput = document.getElementById("searchInput");
 
-// Paging variables
 let currentPage = 1;
-const pageSize = 5; // number of user entries per page
+const pageSize = 4; // 4 entries per page
 let filteredEntries = [];
 
-// Convert allData into an array for easier paging
+// Convert allData object to flat array
 function getAllEntriesArray(data) {
   let arr = [];
   for (const date in data) {
@@ -20,7 +19,7 @@ function getAllEntriesArray(data) {
   return arr;
 }
 
-// Search handler
+// Handle search
 function handleSearch() {
   const term = searchInput.value.toLowerCase();
   const allEntries = getAllEntriesArray(allData);
@@ -35,7 +34,7 @@ function handleSearch() {
   renderData();
 }
 
-// Render data with paging
+// Render data based on currentPage
 function renderData() {
   dataDisplay.innerHTML = "";
 
@@ -48,16 +47,7 @@ function renderData() {
   const startIndex = (currentPage - 1) * pageSize;
   const paginatedItems = filteredEntries.slice(startIndex, startIndex + pageSize);
 
-  let lastDate = "";
   paginatedItems.forEach(({ date, user, entry }) => {
-    if (date !== lastDate) {
-      const dateBlock = document.createElement("div");
-      dateBlock.className = "date-block";
-      dateBlock.innerHTML = `<h2>📅 Date: ${date}</h2>`;
-      dataDisplay.appendChild(dateBlock);
-      lastDate = date;
-    }
-
     const denominations = ['n2000', 'n500', 'n200', 'n100', 'n50', 'n20', 'n10', 'n5', 'n2', 'n1'];
     let total = 0;
     denominations.forEach(den => {
@@ -65,9 +55,10 @@ function renderData() {
     });
     if (entry.chocolates) total += entry.chocolates * 10;
 
-    const userEntry = document.createElement("div");
-    userEntry.className = "user-entry";
-    userEntry.innerHTML = `
+    const entryBlock = document.createElement("div");
+    entryBlock.className = "user-entry";
+    entryBlock.innerHTML = `
+      <h3>📅 Date: ${date}</h3>
       <strong>👤 ${user}</strong><br/>
       💰 Total: ₹${total}<br/>
       🍫 Chocolates: ${entry.chocolates || 0}<br/>
@@ -77,13 +68,13 @@ function renderData() {
       <button onclick="sendToCalculator('${date}', '${user}')">➕ Add</button>
     `;
 
-    dataDisplay.lastChild.appendChild(userEntry);
+    dataDisplay.appendChild(entryBlock);
   });
 
   renderPagination();
 }
 
-// Pagination buttons
+// Render pagination buttons
 function renderPagination() {
   paginationContainer.innerHTML = "";
   const totalPages = Math.ceil(filteredEntries.length / pageSize);
@@ -102,12 +93,14 @@ function renderPagination() {
   }
 }
 
+// Send entry to calculator
 function sendToCalculator(date, user) {
   const entryData = allData[date][user];
   localStorage.setItem("moneyCalculatorSelectedEntry", JSON.stringify(entryData));
   window.location.href = "../html/calculater.html";
 }
 
+// Delete entry
 function deleteUserEntry(date, user) {
   if (confirm(`Are you sure you want to delete data for ${user} on ${date}?`)) {
     delete allData[date][user];
@@ -119,6 +112,7 @@ function deleteUserEntry(date, user) {
   }
 }
 
+// Clear all
 function clearAllData() {
   if (confirm("Are you sure you want to clear ALL saved data?")) {
     localStorage.removeItem(localStorageKey);
@@ -126,6 +120,7 @@ function clearAllData() {
   }
 }
 
-// Initialize
+// Init
+searchInput.addEventListener("input", handleSearch);
 filteredEntries = getAllEntriesArray(allData);
 renderData();
