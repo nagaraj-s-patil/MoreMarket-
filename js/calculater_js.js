@@ -18,7 +18,7 @@ function getSelectedDate() {
   return picker.value || new Date().toISOString().split('T')[0]; // fallback to today
 }
 function getUserName() {
-  return document.getElementById("userName").value.trim();
+  return document.getElementById("username").value.trim();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
