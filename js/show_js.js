@@ -1,4 +1,4 @@
-let allData = JSON.parse(localStorage.getItem("moneyData")) || [];
+let allData = JSON.parse(localStorage.getItem("moneyCalculatorAllData")) || [];
 let filteredData = [...allData];
 let currentPage = 1;
 const itemsPerPage = 4;
@@ -7,7 +7,6 @@ function renderTable() {
   const tableBody = document.getElementById("tableBody");
   tableBody.innerHTML = "";
 
-  // Pagination calculation
   const start = (currentPage - 1) * itemsPerPage;
   const end = start + itemsPerPage;
   const pageData = filteredData.slice(start, end);
@@ -15,7 +14,7 @@ function renderTable() {
   pageData.forEach(item => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${item.date}</td>
+      <td>${item.date || "-"}</td>
       <td>${item.user || "Unknown"}</td>
       <td>${item.total || 0}</td>
       <td><button onclick="loadToCalculator('${item.date}')">Load</button></td>
@@ -24,7 +23,7 @@ function renderTable() {
   });
 
   document.getElementById("pageInfo").textContent =
-    `Page ${currentPage} of ${Math.ceil(filteredData.length / itemsPerPage)}`;
+    `Page ${currentPage} of ${Math.max(1, Math.ceil(filteredData.length / itemsPerPage))}`;
 }
 
 function nextPage() {
@@ -52,7 +51,6 @@ function applyDateFilter() {
            (!to || itemDate <= new Date(to));
   });
 
-  // Sort ascending by date
   filteredData.sort((a, b) => new Date(a.date) - new Date(b.date));
 
   currentPage = 1;
@@ -69,7 +67,6 @@ function resetFilter() {
 
 function loadToCalculator(date) {
   alert(`Loading data for ${date} into calculator...`);
-  // You can implement actual redirection & passing data here
 }
 
 // Initial load
