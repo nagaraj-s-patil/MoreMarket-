@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VV Puram Store Performance</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .store-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .store-details {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        
+        .detail-item {
+            margin-bottom: 8px;
+        }
+        
+        .section {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #128c7e;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .section-title i {
+            margin-right: 8px;
+        }
+        
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .input-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .input-field {
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #25d366;
+        }
+        
+        .shrink-section {
+            background-color: #fff8e1;
+        }
+        
+        .super-skus-container {
+            margin-bottom: 15px;
+        }
+        
+        .super-skus {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .sku-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sku-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .add-sku-btn, .remove-sku-btn {
+            background-color: #25d366;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .remove-sku-btn {
+            background-color: #ff4444;
+        }
+        
+        .add-sku-btn:hover {
+            background-color: #128c7e;
+        }
+        
+        .remove-sku-btn:hover {
+            background-color: #cc0000;
+        }
+        
+        .suggestions {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        
+        .suggestions-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #128c7e;
+        }
+        
+        .suggestion-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .suggestion-item {
+            background-color: #e8f5e9;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .suggestion-item:hover {
+            background-color: #c8e6c9;
+        }
+        
+        .diamond-section {
+            background-color: #e8f5e9;
+        }
+        
+        .diamond-input {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+        }
+        
+        .diamond-title {
+            font-weight: bold;
+        }
+        
+        .diamond-input-field {
+            width: 60px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .action-section {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .copy-btn {
+            background-color: #25d366;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .copy-btn:hover {
+            background-color: #128c7e;
+        }
+        
+        .output-section {
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            border-top: 1px solid #eee;
+        }
+        
+        .output-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #128c7e;
+        }
+        
+        .output-text {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            font-size: 14px;
+            line-height: 1.5;
+            white-space: pre-line;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 600px) {
+            .input-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .super-skus {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="store-name">VV Puram Store Performance</div>
+            <div class="store-details">
+                <div class="detail-item">Store Code: 3015</div>
+                <div class="detail-item">Manager: Suhasini</div>
+                <div class="detail-item">Duty Manager: Shashank</div>
+                <div class="detail-item">Date: <span id="current-date">04/10/25</span></div>
+            </div>
+        </div>
+        
+        <!-- Other sections (FTD, MTD, F&V, Shrink Control) remain the same -->
+        <div class="section">
+            <div class="section-title">📊 FTD Performance</div>
+            <div class="input-grid">
+                <div class="input-group">
+                    <label class="input-label">FTD Target</label>
+                    <input type="text" class="input-field" id="ftd-target" value="0.9">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">FTD Sale</label>
+                    <input type="text" class="input-field" id="ftd-sale" value="1.8">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Achievement %</label>
+                    <input type="text" class="input-field" id="ftd-ach" value="200">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">FTD NOB</label>
+                    <input type="text" class="input-field" id="ftd-nob" value="336">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">FTD ATV</label>
+                    <input type="text" class="input-field" id="ftd-atv" value="537">
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">📈 MTD Performance</div>
+            <div class="input-grid">
+                <div class="input-group">
+                    <label class="input-label">MTD NOB</label>
+                    <input type="text" class="input-field" id="mtd-nob" value="1074">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">MTD ATV</label>
+                    <input type="text" class="input-field" id="mtd-atv" value="407">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">MTD Target</label>
+                    <input type="text" class="input-field" id="mtd-target" value="3.4">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">MTD Sale</label>
+                    <input type="text" class="input-field" id="mtd-sale" value="4.38">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Achievement %</label>
+                    <input type="text" class="input-field" id="mtd-ach" value="129">
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <div class="section-title">🥦 F&V Performance</div>
+            <div class="input-grid">
+                <div class="input-group">
+                    <label class="input-label">F&V FTD Target</label>
+                    <input type="text" class="input-field" id="fv-ftd-target" value="0.07">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">F&V FTD Sale</label>
+                    <input type="text" class="input-field" id="fv-ftd-sale" value="0.07">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">F&V FTD Achievement %</label>
+                    <input type="text" class="input-field" id="fv-ftd-ach" value="100">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">F&V MTD Target</label>
+                    <input type="text" class="input-field" id="fv-mtd-target" value="0.29">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">F&V MTD Sale</label>
+                    <input type="text" class="input-field" id="fv-mtd-sale" value="0.25">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">F&V MTD Achievement %</label>
+                    <input type="text" class="input-field" id="fv-mtd-ach" value="86">
+                </div>
+            </div>
+        </div>
+        
+        <div class="section shrink-section">
+            <div class="section-title">🔍 Shrink Control Parameters</div>
+            <div class="input-grid">
+                <div class="input-group">
+                    <label class="input-label">PIHV Variance Value</label>
+                    <input type="text" class="input-field" id="pihv" value="- No schedule">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">SCV Count</label>
+                    <input type="text" class="input-field" id="scv" value="03">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Cash Reco Tender Diff</label>
+                    <input type="text" class="input-field" id="cash-diff" value="-13">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">POS Utilization %</label>
+                    <input type="text" class="input-field" id="pos-util" value="100">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Dynamic Super 10 SKUs Section -->
+        <div class="section">
+            <div class="section-title">
+                <span>🏆 Super 10 SKUs</span>
+                <button class="add-sku-btn" id="add-sku-btn">+ Add Product</button>
+            </div>
+            <div class="super-skus-container">
+                <div class="super-skus" id="super-skus-container">
+                    <!-- Dynamic SKU items will be added here -->
+                </div>
+                <div class="sku-actions">
+                    <button class="add-sku-btn" id="add-another-sku">+ Add Another</button>
+                </div>
+            </div>
+            
+            <div class="suggestions">
+                <div class="suggestions-title">Quick Add Suggestions:</div>
+                <div class="suggestion-items" id="suggestion-items">
+                    <!-- Suggestions will be added here by JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="section diamond-section">
+            <div class="section-title">💎 More + New Diamond</div>
+            <div class="diamond-input">
+                <div class="diamond-title">FTD Target: Total staff count x 10</div>
+                <div>
+                    <label class="input-label">Achieved:</label>
+                    <input type="text" class="diamond-input-field" id="diamond-ftd" value="06">
+                </div>
+            </div>
+            <div class="diamond-input">
+                <div class="diamond-title">MTD Target:</div>
+                <div>
+                    <label class="input-label">Target:</label>
+                    <input type="text" class="diamond-input-field" id="diamond-mtd-target" value="12">
+                    <label class="input-label">Achieved:</label>
+                    <input type="text" class="diamond-input-field" id="diamond-mtd-ach" value="13">
+                </div>
+            </div>
+        </div>
+        
+        <div class="action-section">
+            <button class="copy-btn" id="generate-btn">Generate WhatsApp Message</button>
+        </div>
+        
+        <div class="output-section">
+            <div class="output-title">Formatted Message (Copy this to WhatsApp):</div>
+            <div class="output-text" id="output-text"></div>
+        </div>
+        
+        <div class="footer">
+            VV Puram Store Performance Dashboard | Generated on <span id="footer-date">04/10/25</span>
+        </div>
+    </div>
+
+    <script>
+        // Function to get current date in DD/MM/YY format
+        function getCurrentDate() {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = String(today.getFullYear()).slice(-2);
+            
+            return `${day}/${month}/${year}`;
+        }
+        
+        // Set current date in header and footer
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentDate = getCurrentDate();
+            document.getElementById('current-date').textContent = currentDate;
+            document.getElementById('footer-date').textContent = currentDate;
+            
+            // Initialize Super 10 SKUs with default values
+            initializeSuperSKUs();
+            
+            // Initialize suggestions
+            initializeSuggestions();
+        });
+        
+        // Super 10 SKUs functionality
+        let skuCounter = 0;
+        
+        function initializeSuperSKUs() {
+            const defaultSKUs = [
+                { name: "Rice Bag 30&26 kg", qty: "12" },
+                { name: "Atta 5Kg", qty: "01" },
+                { name: "Dry fruit Combi", qty: "01" },
+                { name: "Ghee 1lt", qty: "0" },
+                { name: "Sweet box", qty: "02" },
+                { name: "Diwali gift packs", qty: "01" }
+            ];
+            
+            defaultSKUs.forEach(sku => {
+                addSKUItem(sku.name, sku.qty);
+            });
+        }
+        
+        function addSKUItem(name = "", qty = "") {
+            const container = document.getElementById('super-skus-container');
+            const skuId = `sku-${skuCounter++}`;
+            
+            const skuItem = document.createElement('div');
+            skuItem.className = 'sku-item';
+            skuItem.id = skuId;
+            
+            skuItem.innerHTML = `
+                <label class="input-label">Product Name</label>
+                <input type="text" class="input-field sku-name" value="${name}" placeholder="Enter product name">
+                <label class="input-label">Quantity</label>
+                <input type="text" class="input-field sku-qty" value="${qty}" placeholder="Qty">
+                <button class="remove-sku-btn" onclick="removeSKUItem('${skuId}')">Remove</button>
+            `;
+            
+            container.appendChild(skuItem);
+        }
+        
+        function removeSKUItem(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.remove();
+            }
+        }
+        
+        // Initialize suggestion items
+        function initializeSuggestions() {
+            const suggestions = [
+                "Rice Bag 30&26 kg",
+                "Atta 5Kg", 
+                "Dry fruit Combi",
+                "Ghee 1lt",
+                "Sweet box",
+                "Diwali gift packs",
+                "Oil 1lt",
+                "Sugar 1kg",
+                "Tea 500g",
+                "Biscuits Pack",
+                "Chocolate Box",
+                "Soft Drinks"
+            ];
+            
+            const container = document.getElementById('suggestion-items');
+            
+            suggestions.forEach(suggestion => {
+                const item = document.createElement('div');
+                item.className = 'suggestion-item';
+                item.textContent = suggestion;
+                item.onclick = function() {
+                    addSKUItem(suggestion, "");
+                };
+                container.appendChild(item);
+            });
+        }
+        
+        // Add event listeners for buttons
+        document.getElementById('add-sku-btn').addEventListener('click', function() {
+            addSKUItem();
+        });
+        
+        document.getElementById('add-another-sku').addEventListener('click', function() {
+            addSKUItem();
+        });
+        
+        // Generate WhatsApp message function
+        document.getElementById('generate-btn').addEventListener('click', function() {
+            const currentDate = getCurrentDate();
+            
+            // Get all input values from other sections
+            const ftdTarget = document.getElementById('ftd-target').value;
+            const ftdSale = document.getElementById('ftd-sale').value;
+            const ftdAch = document.getElementById('ftd-ach').value;
+            const ftdNob = document.getElementById('ftd-nob').value;
+            const ftdAtv = document.getElementById('ftd-atv').value;
+            
+            const mtdNob = document.getElementById('mtd-nob').value;
+            const mtdAtv = document.getElementById('mtd-atv').value;
+            const mtdTarget = document.getElementById('mtd-target').value;
+            const mtdSale = document.getElementById('mtd-sale').value;
+            const mtdAch = document.getElementById('mtd-ach').value;
+            
+            const fvFtdTarget = document.getElementById('fv-ftd-target').value;
+            const fvFtdSale = document.getElementById('fv-ftd-sale').value;
+            const fvFtdAch = document.getElementById('fv-ftd-ach').value;
+            const fvMtdTarget = document.getElementById('fv-mtd-target').value;
+            const fvMtdSale = document.getElementById('fv-mtd-sale').value;
+            const fvMtdAch = document.getElementById('fv-mtd-ach').value;
+            
+            const pihv = document.getElementById('pihv').value;
+            const scv = document.getElementById('scv').value;
+            const cashDiff = document.getElementById('cash-diff').value;
+            const posUtil = document.getElementById('pos-util').value;
+            
+            // Get Super 10 SKUs data
+            const skuNames = document.querySelectorAll('.sku-name');
+            const skuQtys = document.querySelectorAll('.sku-qty');
+            let skuText = "";
+            
+            for (let i = 0; i < skuNames.length; i++) {
+                if (skuNames[i].value.trim() !== "" && skuQtys[i].value.trim() !== "") {
+                    skuText += `${skuNames[i].value} Qty: ${skuQtys[i].value}\n`;
+                }
+            }
+            
+            const diamondFtd = document.getElementById('diamond-ftd').value;
+            const diamondMtdTarget = document.getElementById('diamond-mtd-target').value;
+            const diamondMtdAch = document.getElementById('diamond-mtd-ach').value;
+            
+            // Generate the formatted message
+            const message = `Store Name: *VV Puram*
+Store Code: *3015*
+Store Manager:*Suhasini*
+Duty Manager: *Shashank*
+Date : *${currentDate}*
+
+FTD Target : *${ftdTarget}*
+*FTD Sale : *${ftdSale}*
+Ach: *${ftdAch}%*
+FTD NOB : *${ftdNob}*
+FTD ATV : *${ftdAtv}*
+
+MTD NOB: *${mtdNob}*
+MTD ATV : *${mtdAtv}*
+
+MTD Target: *${mtdTarget}*
+*MTD Sale : *${mtdSale}*
+Ach: *${mtdAch}%*
+
+F&V FTD Target : *${fvFtdTarget}*
+*F&V FTD Sale: *${fvFtdSale}*
+Ach: *${fvFtdAch}%*
+
+F&V MTD Target: *${fvMtdTarget}*
+F&V MTD Sale :*${fvMtdSale}*
+Ach: *${fvMtdAch}%*
+
+*Shrink control Parameters
+PIHV Variance Value: *${pihv}*
+SCV count: *${scv}*
+Cash Reco Tender difference: *${cashDiff}*
+POS utilization%:-${posUtil}%
+=================
+
+Super 10 SKUs
+${skuText}
+💎 More + "New Diamond" target FTD = Total staff count x 10
+Achieved : ${diamondFtd}
+💎 *More + new Diamond MTD target : ${diamondMtdTarget}
+Achieved :${diamondMtdAch}`;
+
+            // Display the message
+            document.getElementById('output-text').textContent = message;
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(message).then(function() {
+                alert('Message copied to clipboard! You can now paste it in WhatsApp.');
+            }, function(err) {
+                console.error('Could not copy text: ', err);
+            });
+        });
+    </script>
+</body>
+</html>
