@@ -85,8 +85,7 @@ Supports:
 │── index.html
 │── style.css
 │── script.js
-└── assets/
-      └── product-images/
+
 ```
 
 ---
